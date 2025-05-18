@@ -1,5 +1,6 @@
 import pandas as pd
 from sklearn.preprocessing import StandardScaler, LabelEncoder
+import sys
 
 def preprocess_data(input_path, output_path):
     # Memuat dataset
@@ -37,4 +38,7 @@ def preprocess_data(input_path, output_path):
     return df
 
 if __name__ == '__main__':
-    preprocess_data('updated_pollution_dataset_raw/updated_pollution_dataset.csv', 'preprocessing/pollution_dataset_preprocessed.csv')
+    # Ambil path dari command line argument
+    input_path = sys.argv[1]
+    output_path = sys.argv[2]
+    preprocess_data(input_path, output_path)
