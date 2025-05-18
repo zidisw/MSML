@@ -1,5 +1,9 @@
 name: Preprocess Dataset
 on: [push]
+
+permissions:
+  contents: write 
+  
 jobs:
   preprocess:
     runs-on: ubuntu-latest
