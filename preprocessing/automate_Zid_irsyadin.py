@@ -23,7 +23,7 @@ def preprocess_data(input_path, output_path):
     df = remove_outliers(df, 'PM2.5')
     df = remove_outliers(df, 'PM10')
     
-    # Encoding Air Quality
+    # Encoding status Air Quality
     label_encoder = LabelEncoder()
     df['Air Quality'] = label_encoder.fit_transform(df['Air Quality'])
     
