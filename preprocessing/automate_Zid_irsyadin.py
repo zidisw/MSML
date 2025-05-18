@@ -37,4 +37,4 @@ def preprocess_data(input_path, output_path):
     return df
 
 if __name__ == '__main__':
-    preprocess_data('./updated_pollution_dataset.csv', 'preprocessing/pollution_dataset_preprocessed.csv')
+    preprocess_data('updated_pollution_dataset_raw/updated_pollution_dataset.csv', 'preprocessing/pollution_dataset_preprocessed.csv')
