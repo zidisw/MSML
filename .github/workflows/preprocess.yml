@@ -3,7 +3,7 @@ on: [push]
 
 permissions:
   contents: write 
-  
+
 jobs:
   preprocess:
     runs-on: ubuntu-latest
@@ -16,11 +16,11 @@ jobs:
       - name: Install dependencies
         run: pip install pandas scikit-learn
       - name: Run preprocessing
-        run: python preprocessing/automate_Zid_irsyadin.py updated_pollution_dataset_raw/updated_pollution_dataset.csv preprocessing/pollution_dataset_preprocessed.csv
+        run: python preprocessing/automate_Zid_irsyadin.py updated_pollution_dataset_raw/updated_pollution_dataset.csv preprocessing/pollution_dataset_preprocessed_advance.csv
       - name: Commit preprocessed data
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git add preprocessing/pollution_dataset_preprocessed.csv
+          git add preprocessing/pollution_dataset_preprocessed_advance.csv
           git commit -m 'Update preprocessed dataset' || echo 'No changes to commit'
           git push
