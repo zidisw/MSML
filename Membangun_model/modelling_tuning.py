@@ -4,14 +4,14 @@ import mlflow.sklearn
 from mlflow.models.signature import infer_signature
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV, train_test_split
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, log_loss
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, log_loss, roc_auc_score
 import os
 
 # Konfigurasi koneksi ke DagsHub
 os.environ["MLFLOW_TRACKING_USERNAME"] = "zidisw"
 os.environ["MLFLOW_TRACKING_PASSWORD"] = "78af145a93f6cda50d1106737e56bc4e698b5825"
 mlflow.set_tracking_uri("https://dagshub.com/zidisw/Eksperimen_SML_Zid_Irsyadin.mlflow")
-mlflow.set_experiment("MSML-Advanced")
+mlflow.set_experiment("MSML-SkilledAdvance-Final")
 
 # Load dataset
 df = pd.read_csv("Membangun_model/pollution_dataset_preprocessed_advance.csv")
@@ -38,16 +38,18 @@ with mlflow.start_run():
     prec = precision_score(y_test, y_pred, average='macro')
     rec = recall_score(y_test, y_pred, average='macro')
     f1 = f1_score(y_test, y_pred, average='macro')
+    roc_auc = roc_auc_score(y_test, y_proba[:, 1])
     logloss = log_loss(y_test, y_proba)
 
     # Logging Manual
     mlflow.log_params(grid.best_params_)
     mlflow.log_metrics({
-        "accuracy": acc,
-        "precision": prec,
-        "recall": rec,
-        "f1_score": f1,
-        "log_loss": logloss
+        "training_accuracy_score": acc,
+        "training_precision_score": prec,
+        "training_recall_score": rec,
+        "training_f1_score": f1,
+        "training_roc_auc_score": roc_auc,
+        "training_log_loss": logloss
     })
 
     # Tambahan: Signature & Input Example

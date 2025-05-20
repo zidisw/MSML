@@ -9,7 +9,7 @@ import os
 os.environ["MLFLOW_TRACKING_USERNAME"] = "zidisw"
 os.environ["MLFLOW_TRACKING_PASSWORD"] = "78af145a93f6cda50d1106737e56bc4e698b5825"
 mlflow.set_tracking_uri("https://dagshub.com/zidisw/Eksperimen_SML_Zid_Irsyadin.mlflow")
-mlflow.set_experiment("MSML-Basic")
+mlflow.set_experiment("MSML-Basic-Final")
 
 # Aktifkan autolog 
 mlflow.sklearn.autolog()
