@@ -1,0 +1,13 @@
+digest: 870de2ad
+name: dataset
+profile: '{"num_rows": 3629, "num_elements": 32661}'
+schema: '{"mlflow_colspec": [{"type": "double", "name": "Temperature", "required":
+  true}, {"type": "double", "name": "Humidity", "required": true}, {"type": "double",
+  "name": "PM2.5", "required": true}, {"type": "double", "name": "PM10", "required":
+  true}, {"type": "double", "name": "NO2", "required": true}, {"type": "double", "name":
+  "SO2", "required": true}, {"type": "double", "name": "CO", "required": true}, {"type":
+  "double", "name": "Proximity_to_Industrial_Areas", "required": true}, {"type": "double",
+  "name": "Population_Density", "required": true}]}'
+source: '{"tags": {"mlflow.user": "zidir", "mlflow.source.name": "Membangun_model/modelling.py",
+  "mlflow.source.type": "LOCAL", "mlflow.source.git.commit": "28e1ca8a2ece04bf482ac8968e4f31639bd1f6dc"}}'
+source_type: code

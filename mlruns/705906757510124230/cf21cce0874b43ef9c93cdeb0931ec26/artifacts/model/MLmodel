@@ -1,0 +1,30 @@
+artifact_path: model
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.12.7
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.6.1
+mlflow_version: 2.19.0
+model_size_bytes: 3355453
+model_uuid: 78611317f773444a8f37c24768e742c6
+run_id: cf21cce0874b43ef9c93cdeb0931ec26
+signature:
+  inputs: '[{"type": "double", "name": "Temperature", "required": true}, {"type":
+    "double", "name": "Humidity", "required": true}, {"type": "double", "name": "PM2.5",
+    "required": true}, {"type": "double", "name": "PM10", "required": true}, {"type":
+    "double", "name": "NO2", "required": true}, {"type": "double", "name": "SO2",
+    "required": true}, {"type": "double", "name": "CO", "required": true}, {"type":
+    "double", "name": "Proximity_to_Industrial_Areas", "required": true}, {"type":
+    "double", "name": "Population_Density", "required": true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "int64", "shape": [-1]}}]'
+  params: null
+utc_time_created: '2025-05-20 20:29:22.331947'
