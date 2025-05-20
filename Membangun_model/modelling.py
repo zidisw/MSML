@@ -1,43 +1,27 @@
 import pandas as pd
 import mlflow
-import mlflow.xgboost
-from xgboost import XGBClassifier
+import mlflow.sklearn
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-import dagshub
+import os
 
-# Inisialisasi DagsHub untuk MLflow
-dagshub.init(repo_owner='zidsw', repo_name='Eksperimen_SML_Zid_Irsyadin', mlflow=True)
+# Konfigurasi koneksi ke DagsHub (online atau bisa diganti lokal)
+os.environ["MLFLOW_TRACKING_USERNAME"] = "zidisw"
+os.environ["MLFLOW_TRACKING_PASSWORD"] = "78af145a93f6cda50d1106737e56bc4e698b5825"
+mlflow.set_tracking_uri("https://dagshub.com/zidisw/Eksperimen_SML_Zid_Irsyadin.mlflow")
+mlflow.set_experiment("MSML-Basic")
 
-def train_basic_model(input_path):
-    # Memuat dataset
-    df = pd.read_csv(input_path)
-    X = df.drop('Air Quality', axis=1)
-    y = df['Air Quality']
-    
-    # Membagi data
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    
-    # Mengatur MLflow
-    mlflow.set_experiment("Basic_Model_Zid_Irsyadin")
-    mlflow.xgboost.autolog()
-    
-    with mlflow.start_run(run_name="basic_xgboost"):
-        # Melatih model
-        model = XGBClassifier(n_estimators=100, random_state=42, use_label_encoder=False, eval_metric='mlogloss')
-        model.fit(X_train, y_train)
-        
-        # Memprediksi
-        y_pred = model.predict(X_test)
-        
-        # Menghitung metrik
-        accuracy = accuracy_score(y_test, y_pred)
-        mlflow.log_metric("accuracy", accuracy)
-        
-        print(f"Akurasi: {accuracy}")
-    
-    return model
+# Aktifkan autolog 
+mlflow.sklearn.autolog()
 
-if __name__ == "__main__":
-    input_path = "Membangun_model/pollution_dataset_preprocessed_advance.csv"
-    train_basic_model(input_path)
+# Load dataset
+df = pd.read_csv("Membangun_model/pollution_dataset_preprocessed_advance.csv")
+X = df.drop(columns="Air Quality")
+y = df["Air Quality"]
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Jalankan run dengan autolog aktif
+with mlflow.start_run():
+    model = RandomForestClassifier(n_estimators=100, random_state=42)
+    model.fit(X_train, y_train)
