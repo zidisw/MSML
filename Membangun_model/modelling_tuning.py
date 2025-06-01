@@ -4,8 +4,12 @@ import mlflow.sklearn
 from mlflow.models.signature import infer_signature
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV, train_test_split
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, log_loss, roc_auc_score
+from sklearn.metrics import (
+    accuracy_score, precision_score, recall_score,
+    f1_score, log_loss, roc_auc_score, classification_report
+)
 import os
+import json
 
 # Load dataset
 df = pd.read_csv("Membangun_model/pollution_dataset_preprocessed_advance.csv")
@@ -13,7 +17,7 @@ X = df.drop(columns="Air Quality")
 y = df["Air Quality"]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Train model with tuning
+# Hyperparameter tuning
 param_grid = {
     'n_estimators': [50, 100, 150],
     'max_depth': [3, 5, 10]
@@ -41,16 +45,24 @@ metrics = {
     "training_roc_auc_score": roc_auc,
     "training_log_loss": logloss
 }
+
 input_example = X_test.iloc[:1]
 signature = infer_signature(X_test, y_pred)
 
-# === 1. LOG TO LOCAL ===
-mlflow.set_tracking_uri("")  # default local
+# Simpan artefak tambahan
+pd.DataFrame(y_pred, columns=["y_pred"]).to_csv("predictions.csv", index=False)
+with open("classification_report.json", "w") as f:
+    json.dump(classification_report(y_test, y_pred, output_dict=True), f)
+
+# 1. LOG TO LOCAL (Skilled)
+mlflow.set_tracking_uri("")  # local
 mlflow.set_experiment("MSML-Skilled-Local")
 
 with mlflow.start_run():
     mlflow.log_params(params)
     mlflow.log_metrics(metrics)
+    mlflow.log_artifact("predictions.csv")
+    mlflow.log_artifact("classification_report.json")
     mlflow.sklearn.log_model(
         best_model,
         "best_rf_model",
@@ -58,7 +70,7 @@ with mlflow.start_run():
         input_example=input_example
     )
 
-# === 2. LOG TO DAGSHUB ===
+# 2. LOG TO DAGSHUB (Advance)
 os.environ["MLFLOW_TRACKING_USERNAME"] = "zidisw"
 os.environ["MLFLOW_TRACKING_PASSWORD"] = "78af145a93f6cda50d1106737e56bc4e698b5825"
 mlflow.set_tracking_uri("https://dagshub.com/zidisw/Eksperimen_SML_Zid_Irsyadin.mlflow")
@@ -67,6 +79,8 @@ mlflow.set_experiment("MSML-Advance-Version")
 with mlflow.start_run():
     mlflow.log_params(params)
     mlflow.log_metrics(metrics)
+    mlflow.log_artifact("predictions.csv")
+    mlflow.log_artifact("classification_report.json")
     mlflow.sklearn.log_model(
         best_model,
         "best_rf_model",
